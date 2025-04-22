@@ -1,14 +1,33 @@
 const http = require('http');
 
-const host = 'localhost';
-const port = 8000;
-
 const server = http.createServer((req, res) => {
-    // Replace this code by your own
-    res.writeHead(200);
-    res.end('Hello from Server!!!!');
+    const cookies = req.headers.cookie || '';
+
+    const parseCookies = cookieString => {
+        return cookieString.split(';').reduce((acc, cookie) => {
+            const [name, value] = cookie.trim().split('=');
+            acc[name] = value;
+            return acc;
+        }, {});
+    };
+
+    const parsedCookies = parseCookies(cookies);
+    const userInfo = parsedCookies.user_info;
+
+    let responseData = {};
+
+    if (userInfo === 'user1') {
+        responseData = {
+            id: 1,
+            firstName: 'Leanne',
+            lastName: 'Graham',
+        };
+    } 
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(responseData));
 });
 
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+server.listen(3000, () => {
+    console.log('Сервер запущено на http://localhost:3000');
 });
