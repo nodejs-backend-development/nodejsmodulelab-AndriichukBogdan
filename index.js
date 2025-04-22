@@ -22,9 +22,7 @@ const server = http.createServer((req, res) => {
             firstName: 'Leanne',
             lastName: 'Graham',
         };
-    } else {
-        responseData = {};
-    }
+    } 
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(responseData));
